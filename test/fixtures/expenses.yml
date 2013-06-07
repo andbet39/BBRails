@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  title: MyString
+  date: 2013-06-06 10:24:14
+  value: 9.99
+  reservation: 
+
+two:
+  title: MyString
+  date: 2013-06-06 10:24:14
+  value: 9.99
+  reservation: 

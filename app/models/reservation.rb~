@@ -1,0 +1,29 @@
+class Reservation < ActiveRecord::Base
+  belongs_to :room
+  belongs_to :customer
+  attr_accessible :end_date, :start_date ,:room_id, :customer_id
+
+
+  scope :before, lambda {|end_date| {:conditions => ["end_date < ?", Reservation.format_date(end_date)] }}
+  scope :after, lambda {|start_date| {:conditions => ["start_date > ?", Reservation.format_date(start_date)] }}
+  
+  # need to override the json view to return what full_calendar is expecting.
+  # http://arshaw.com/fullcalendar/docs/event_data/Event_Object/
+  def as_json(options = {})
+    {
+      :id => self.id,
+      :title => self.customer.lastname,
+      :description => self.description || "",
+      :start => starts_date.rfc822,
+      :end => ends_date.rfc822,
+      :allDay => true,
+      :recurring => false,
+      :url => Rails.application.routes.url_helpers.reservation_path(id)
+    }
+    
+  end
+  
+  def self.format_date(date_time)
+    Time.at(date_time.to_i).to_formatted_s(:db)
+  end
+end
